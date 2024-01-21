@@ -30,7 +30,7 @@ const CarSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     model: { type: Number, required: true },
     km: { type: Number, required: true },
-    imageUrl: { type: String, required: true },
+    imageUrls: [{ type: String, required: true }],
     note: { type: String, required: true }
 });
 exports.CardModel = mongoose_1.default.model("Car", CarSchema);

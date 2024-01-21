@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.insertCar = exports.getCarsFromDB = void 0;
+exports.insertCar = exports.getCarFromDB = exports.getAllCarsFromDB = void 0;
 const mongoSchema_1 = require("./configuration/mongoSchema");
-const getCarsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+const getAllCarsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield mongoSchema_1.CardModel.find();
         console.log(result);
@@ -22,7 +22,19 @@ const getCarsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
         console.log(error);
     }
 });
-exports.getCarsFromDB = getCarsFromDB;
+exports.getAllCarsFromDB = getAllCarsFromDB;
+const getCarFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield mongoSchema_1.CardModel.findById(id);
+        console.log(result);
+        return result;
+    }
+    catch (error) {
+        throw error;
+        console.log(error);
+    }
+});
+exports.getCarFromDB = getCarFromDB;
 const insertCar = (car) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const newCar = new mongoSchema_1.CardModel(car);

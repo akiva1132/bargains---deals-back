@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { getCarsFromDB, insertCar } from "./DAL";
+import { getAllCarsFromDB, insertCar, getCarFromDB } from "./DAL";
 
 
 export const getAllCars = async (req: Request, res: Response) => {
     try {
-        const cars = await getCarsFromDB()
+        const cars = await getAllCarsFromDB()
         res.send(cars)
     }
     catch (error) {
@@ -13,7 +13,14 @@ export const getAllCars = async (req: Request, res: Response) => {
 }
 
 export const getCar = async (req: Request, res: Response) => {
-    res.send("12345")
+    const {id} = req.params
+    try {
+        const cars = await getCarFromDB(id)
+        res.send(cars)
+    }
+    catch (error) {
+        if (error instanceof Error) res.status(400).send(error.message)
+    }
 }
 
 export const addCar = async (req: Request, res: Response) => {

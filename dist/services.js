@@ -13,7 +13,7 @@ exports.addCar = exports.getCar = exports.getAllCars = void 0;
 const DAL_1 = require("./DAL");
 const getAllCars = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const cars = yield (0, DAL_1.getCarsFromDB)();
+        const cars = yield (0, DAL_1.getAllCarsFromDB)();
         res.send(cars);
     }
     catch (error) {
@@ -23,7 +23,15 @@ const getAllCars = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.getAllCars = getAllCars;
 const getCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("12345");
+    const { id } = req.params;
+    try {
+        const cars = yield (0, DAL_1.getCarFromDB)(id);
+        res.send(cars);
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).send(error.message);
+    }
 });
 exports.getCar = getCar;
 const addCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

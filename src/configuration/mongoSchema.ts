@@ -6,7 +6,7 @@ const CarSchema = new Schema(
     name: { type: String, required: true },
     model: { type: Number, required: true },
     km: { type: Number, required: true },
-    imageUrl: { type: String, required: true },
+    imageUrls: [{ type: String, required: true }],
     note: { type: String, required: true }
   }
 );
