@@ -33,7 +33,8 @@ const CarSchema = new mongoose_1.Schema({
     imageUrls: [{ type: String, required: true }],
     hand: { type: Number, required: false },
     test: { type: String, required: false },
-    note: { type: String, required: false }
+    note: { type: String, required: false },
+    price: { type: String, required: false }
 });
 const UserSchema = new mongoose_1.Schema({
     userName: { type: String, required: true },
