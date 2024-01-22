@@ -29,9 +29,11 @@ const CarSchema = new mongoose_1.Schema({
     manufacturer: { type: String, required: true },
     name: { type: String, required: true },
     model: { type: Number, required: true },
-    km: { type: Number, required: true },
+    km: { type: Number, required: false },
     imageUrls: [{ type: String, required: true }],
-    note: { type: String, required: true }
+    hand: { type: Number, required: false },
+    test: { type: String, required: false },
+    note: { type: String, required: false }
 });
 const UserSchema = new mongoose_1.Schema({
     userName: { type: String, required: true },

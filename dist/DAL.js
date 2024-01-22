@@ -36,7 +36,6 @@ const getCarFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         throw error;
-        console.log(error);
     }
 });
 exports.getCarFromDB = getCarFromDB;
@@ -56,7 +55,8 @@ const getToken = (userName, password) => __awaiter(void 0, void 0, void 0, funct
         const result = yield mongoSchema_1.UserModel.findOne({ userName: userName });
         if (result && result.password === password) {
             console.log(result);
-            const token = jsonwebtoken_1.default.sign({ userName, password }, exports.secretKey, { expiresIn: '1m' });
+            const token = jsonwebtoken_1.default.sign({ userName, password }, exports.secretKey, { expiresIn: '30d' });
+            console.log(token);
             return token;
         }
         else

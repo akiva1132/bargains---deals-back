@@ -59,6 +59,8 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
         const decoded = jwt.verify(token, secretKey);
         if (decoded) next();
     } catch (error) {
+        console.log(token);
+        
         return res.status(403).json({ error: 'Forbidden' });
     }
 }

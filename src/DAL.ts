@@ -22,7 +22,6 @@ export const getCarFromDB = async (id:string) => {
     }
     catch (error) {
         throw error
-        console.log(error)
     }
 }
 
@@ -44,7 +43,9 @@ export const getToken = async (userName: string, password:string) => {
         const result = await UserModel.findOne({userName: userName})
         if (result && result.password === password){
             console.log(result);
-            const token = jwt.sign({ userName, password }, secretKey, { expiresIn: '1m' });
+            const token = jwt.sign({ userName, password }, secretKey, { expiresIn: '30d' });
+            console.log(token);
+            
             return token
         }
         else throw new Error ("user not found or password incorrect")

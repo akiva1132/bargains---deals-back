@@ -76,6 +76,7 @@ const authenticateToken = (req, res, next) => __awaiter(void 0, void 0, void 0, 
             next();
     }
     catch (error) {
+        console.log(token);
         return res.status(403).json({ error: 'Forbidden' });
     }
 });
