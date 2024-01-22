@@ -11,10 +11,25 @@ const CarSchema = new Schema(
   }
 );
 
+const UserSchema = new Schema(
+  {
+    userName: { type: String, required: true },
+    password: { type: String, required: true }
+  }
+);
+
 
 export type Car = InferSchemaType<typeof CarSchema>;
+
+export type User = InferSchemaType<typeof UserSchema>;
 
 export const CardModel: Model<Car> = mongoose.model<Car>(
   "Car",
   CarSchema
 );
+
+export const UserModel: Model<User> = mongoose.model<User>(
+  "users",
+  UserSchema
+);
+

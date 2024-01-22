@@ -24,7 +24,8 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.get('/cars', services_1.getAllCars);
 app.get('/getCar/:id', services_1.getCar);
-app.post('/addCar', services_1.addCar);
+app.post('/addCar', services_1.authenticateToken, services_1.addCar);
+app.post('/logIn', services_1.logIn);
 app.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, mongo_1.connectToMongo)();
     console.log(`server is running on ${PORT}`);

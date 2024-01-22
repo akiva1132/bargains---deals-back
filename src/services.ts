@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
-import { getAllCarsFromDB, insertCar, getCarFromDB } from "./DAL";
+import { NextFunction, Request, Response } from "express";
+import { getAllCarsFromDB, insertCar, getCarFromDB, getToken, secretKey } from "./DAL";
+import jwt from 'jsonwebtoken';
 
 
 export const getAllCars = async (req: Request, res: Response) => {
@@ -33,5 +34,32 @@ export const addCar = async (req: Request, res: Response) => {
         if (error instanceof Error) res.status(400).send(error.message)
     }
 }
+
+export const logIn = async (req: Request, res: Response) => {
+    try {
+        const {userName, password} = req.body
+        console.log(userName, password);
+        const token =  await getToken(userName, password)
+        res.send(token)
+    }
+    catch (error) {
+        if (error instanceof Error) res.status(400).send(error.message)
+    }
+}
+
+export const authenticateToken = async (req: Request, res: Response, next:NextFunction) => {
+    const token = req.header('Authorization');
+    if (!token) return res.status(401).json({ error: 'Unauthorized' });
+    try {
+      const decoded = jwt.verify(token, secretKey);
+      if (decoded) next();
+    } catch (error) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+}
+
+
+
+
 
 

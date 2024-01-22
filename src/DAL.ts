@@ -1,6 +1,7 @@
-import { Car, CardModel } from "./configuration/mongoSchema"
+import { Car, CardModel, UserModel } from "./configuration/mongoSchema"
+import jwt from 'jsonwebtoken';
 
-
+export const secretKey = "akiva1132"
 export const getAllCarsFromDB = async () => {
     try {
         const result = await CardModel.find()
@@ -30,6 +31,25 @@ export const insertCar = async (car: Car) => {
     try {
         const newCar = new CardModel(car);
         return await newCar.save()
+    }
+    catch (error) {
+        throw error
+        console.log(error)
+    }
+}
+
+
+export const getToken = async (userName: string, password:string) => {
+    try {
+        const result = await UserModel.findOne({userName: userName})
+        if (result && result.password === password){
+            console.log(result);
+            const token = jwt.sign({ userName, password }, secretKey, { expiresIn: '1m' });
+            return token
+        }
+        else throw new Error ("user not found or password incorrect")
+
+
     }
     catch (error) {
         throw error
