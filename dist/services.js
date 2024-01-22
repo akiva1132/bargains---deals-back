@@ -12,9 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authenticateToken = exports.logIn = exports.addCar = exports.getCar = exports.getAllCars = void 0;
+exports.uploadFile = exports.authenticateToken = exports.logIn = exports.addCar = exports.getCar = exports.getAllCars = void 0;
 const DAL_1 = require("./DAL");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const BASE_URL = process.env.BASE_URL;
 const getAllCars = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const cars = yield (0, DAL_1.getAllCarsFromDB)();
@@ -77,3 +80,8 @@ const authenticateToken = (req, res, next) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.authenticateToken = authenticateToken;
+const uploadFile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('File uploaded:', req.body);
+    res.send(`${BASE_URL}uploads/${req.body}`);
+});
+exports.uploadFile = uploadFile;

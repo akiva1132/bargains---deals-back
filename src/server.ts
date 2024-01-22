@@ -2,7 +2,11 @@ import express from "express"
 import dotenv from "dotenv";
 import { connectToMongo } from "./configuration/mongo";
 import cors from 'cors';
-import { addCar, authenticateToken, getAllCars, getCar, logIn } from "./services";
+import { addCar, authenticateToken, getAllCars, getCar, logIn, uploadFile } from "./services";
+import path from 'path';
+import { Request, Response } from "express";
+import { upload } from "./handleFiles";
+
 
 dotenv.config();
 const PORT = process.env.PORT || 3000
@@ -17,6 +21,16 @@ app.get('/cars', getAllCars)
 app.get('/getCar/:id', getCar)
 app.post('/addCar',authenticateToken,  addCar)
 app.post('/logIn', logIn)
+app.post('/upload', upload.single('file'), uploadFile);
+
+
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+
+
+
+// app.get('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 app.listen(PORT, async ()=> {
 await connectToMongo()
