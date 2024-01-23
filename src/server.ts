@@ -21,7 +21,7 @@ app.get('/cars', getAllCars)
 app.get('/getCar/:id', getCar)
 app.post('/addCar',authenticateToken,  addCar)
 app.post('/logIn', logIn)
-app.delete('/:id', deleteCar)
+app.delete('/:id',authenticateToken, deleteCar)
 app.post('/upload', upload.single('file'), uploadFile);
 
 

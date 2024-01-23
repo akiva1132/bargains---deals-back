@@ -28,6 +28,7 @@ app.get('/cars', services_1.getAllCars);
 app.get('/getCar/:id', services_1.getCar);
 app.post('/addCar', services_1.authenticateToken, services_1.addCar);
 app.post('/logIn', services_1.logIn);
+app.delete('/:id', services_1.authenticateToken, services_1.deleteCar);
 app.post('/upload', handleFiles_1.upload.single('file'), services_1.uploadFile);
 app.use('/uploads', express_1.default.static(path_1.default.join(__dirname, '../uploads')));
 // app.get('/uploads', express.static(path.join(__dirname, 'uploads')));

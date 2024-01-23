@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getToken = exports.insertCar = exports.getCarFromDB = exports.getAllCarsFromDB = exports.secretKey = void 0;
+exports.getToken = exports.deleteCarFromDB = exports.insertCar = exports.getCarFromDB = exports.getAllCarsFromDB = exports.secretKey = void 0;
 const mongoSchema_1 = require("./configuration/mongoSchema");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 exports.secretKey = "akiva1132";
@@ -50,6 +50,17 @@ const insertCar = (car) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.insertCar = insertCar;
+const deleteCarFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield mongoSchema_1.CardModel.deleteOne({ _id: id });
+        return result;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+});
+exports.deleteCarFromDB = deleteCarFromDB;
 const getToken = (userName, password) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield mongoSchema_1.UserModel.findOne({ userName: userName });
