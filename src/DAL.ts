@@ -37,6 +37,15 @@ export const insertCar = async (car: Car) => {
     }
 }
 
+export const deleteCarFromDB = async (id: string) => {
+    try {
+        const result = await CardModel.deleteOne({ _id: id });
+        return result;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
 
 export const getToken = async (userName: string, password:string) => {
     try {

@@ -2,7 +2,7 @@ import express from "express"
 import dotenv from "dotenv";
 import { connectToMongo } from "./configuration/mongo";
 import cors from 'cors';
-import { addCar, authenticateToken, getAllCars, getCar, logIn, uploadFile } from "./services";
+import { addCar, authenticateToken, deleteCar, getAllCars, getCar, logIn, uploadFile } from "./services";
 import path from 'path';
 import { Request, Response } from "express";
 import { upload } from "./handleFiles";
@@ -21,6 +21,7 @@ app.get('/cars', getAllCars)
 app.get('/getCar/:id', getCar)
 app.post('/addCar',authenticateToken,  addCar)
 app.post('/logIn', logIn)
+app.delete('/:id', deleteCar)
 app.post('/upload', upload.single('file'), uploadFile);
 
 

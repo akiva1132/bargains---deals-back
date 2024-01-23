@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { getAllCarsFromDB, insertCar, getCarFromDB, getToken, secretKey } from "./DAL";
+import { getAllCarsFromDB, insertCar, getCarFromDB, getToken, secretKey, deleteCarFromDB } from "./DAL";
 import jwt from 'jsonwebtoken';
 import dotenv from "dotenv";
 
@@ -60,8 +60,19 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
         if (decoded) next();
     } catch (error) {
         console.log(token);
-        
+
         return res.status(403).json({ error: 'Forbidden' });
+    }
+}
+
+export const deleteCar = async (req: Request, res: Response) => {
+    const { id } = req.params
+    try {
+        await deleteCarFromDB(id)
+        res.send("deleted sucsses")
+    }
+    catch (error) {
+        if (error instanceof Error) res.status(400).send(error.message)
     }
 }
 
