@@ -1,5 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { getAllCarsFromDB, insertCar, getCarFromDB, getToken, secretKey, deleteCarFromDB } from "./DAL";
+import {
+    getAllCarsFromDB,
+    insertCar,
+    getCarFromDB,
+    getToken,
+    secretKey,
+    deleteCarFromDB,
+} from "./DAL";
 import jwt from 'jsonwebtoken';
 import dotenv from "dotenv";
 
@@ -75,6 +82,8 @@ export const deleteCar = async (req: Request, res: Response) => {
         if (error instanceof Error) res.status(400).send(error.message)
     }
 }
+
+
 
 
 export const uploadFile = async (req: Request, res: Response, next: NextFunction) => {

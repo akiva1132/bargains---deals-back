@@ -1,5 +1,7 @@
 import mongoose, { Schema, InferSchemaType, Model } from "mongoose";
 
+
+
 const CarSchema = new Schema(
   {
     manufacturer: { type: String, required: true },
@@ -7,10 +9,10 @@ const CarSchema = new Schema(
     model: { type: Number, required: true },
     km: { type: Number, required: false },
     imageUrls: [{ type: String, required: true }],
-    hand:  { type: Number, required: false },
+    hand: { type: Number, required: false },
     test: { type: String, required: false },
     note: { type: String, required: false },
-    price: { type: String, required: false }
+    price: { type: Number, required: false }
   }
 );
 
@@ -28,11 +30,24 @@ export type User = InferSchemaType<typeof UserSchema>;
 
 export const CardModel: Model<Car> = mongoose.model<Car>(
   "Car",
-  CarSchema
+  CarSchema,
 );
 
 export const UserModel: Model<User> = mongoose.model<User>(
   "users",
-  UserSchema
+  UserSchema,
 );
 
+
+
+
+
+export const UserAuctionModel: Model<User> = mongoose.model<User>(
+  "users-auction",
+  UserSchema,
+);
+
+export const CarsAuctionModel: Model<Car> = mongoose.model<Car>(
+  "cars-auction",
+  CarSchema
+);

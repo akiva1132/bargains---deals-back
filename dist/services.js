@@ -12,8 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadFile = exports.deleteCar = exports.authenticateToken = exports.logIn = exports.addCar = exports.getCar = exports.getAllCars = void 0;
-const DAL_1 = require("./DAL");
+exports.uploadFile = exports.priceIncrease = exports.deleteCar = exports.authenticateToken = exports.logIn = exports.addCar = exports.getCar = exports.getAllCars = void 0;
+const DAL_1 = require("./carSales/DAL");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
@@ -93,6 +93,18 @@ const deleteCar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.deleteCar = deleteCar;
+const priceIncrease = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { adId, price } = req.params;
+    try {
+        yield (0, DAL_1.changePriceDB)(adId, +price);
+        res.status(200).send("deleted sucsses");
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).send(error.message);
+    }
+});
+exports.priceIncrease = priceIncrease;
 const uploadFile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('File uploaded:', req.body);
     res.send(`${BASE_URL}uploads/${req.body}`);

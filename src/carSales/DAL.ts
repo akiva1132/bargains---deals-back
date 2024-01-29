@@ -1,4 +1,4 @@
-import { Car, CardModel, UserModel } from "./configuration/mongoSchema"
+import { Car, CardModel, UserModel } from "../configuration/mongoSchema"
 import jwt from 'jsonwebtoken';
 
 export const secretKey = "akiva1132"
@@ -47,6 +47,7 @@ export const deleteCarFromDB = async (id: string) => {
     }
 };
 
+
 export const getToken = async (userName: string, password:string) => {
     try {
         const result = await UserModel.findOne({userName: userName})
@@ -58,8 +59,6 @@ export const getToken = async (userName: string, password:string) => {
             return token
         }
         else throw new Error ("user not found or password incorrect")
-
-
     }
     catch (error) {
         throw error
