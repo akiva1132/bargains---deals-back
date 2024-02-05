@@ -7,6 +7,7 @@ import {
     changePriceDB,
     getToken,
     addUser,
+    getAllUsersFromDB
 } from "./DAL";
 import jwt from 'jsonwebtoken';
 import dotenv from "dotenv";
@@ -18,13 +19,41 @@ const BASE_URL = process.env.BASE_URL;
 
 export const getAllCars = async (req: Request, res: Response) => {
     try {
-        const cars = await getAllCarsFromDB()
+        const advertiser = req.params.advertiser
+        if (!advertiser) throw new Error("advertiser requyer")
+        console.log(advertiser);
+        const cars = await getAllCarsFromDB(advertiser)
         res.send(cars)
     }
     catch (error) {
         if (error instanceof Error) res.status(400).send(error.message)
     }
 }
+
+
+export const getAllUsers = async (req: Request, res: Response) => {
+    try {
+        const users = await getAllUsersFromDB()
+        const newUsers = users.map((user) => {
+            return {
+                id: user._id,
+                userName: user.userName,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                phone: user.phone,
+                IsAdamin: user.IsAdamin,
+                profileImage: user.profileImage
+            }
+        })
+        console.log(newUsers);
+        
+        res.send(newUsers)
+    }
+    catch (error) {
+        if (error instanceof Error) res.status(400).send(error.message)
+    }
+}
+
 
 export const getCar = async (req: Request, res: Response) => {
     const { id } = req.params
@@ -96,7 +125,6 @@ export const logIn = async (req: Request, res: Response) => {
 export const regiset = async (req: Request, res: Response) => {
     try {
         const user = req.body
-
         const token = await addUser(user)
         res.send(token)
     }

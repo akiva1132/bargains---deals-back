@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authenticateToken = exports.regiset = exports.logIn = exports.priceIncrease = exports.checkPrice = exports.addCar = exports.getCar = exports.getAllCars = void 0;
+exports.authenticateToken = exports.regiset = exports.logIn = exports.priceIncrease = exports.checkPrice = exports.addCar = exports.getCar = exports.getAllUsers = exports.getAllCars = void 0;
 const DAL_1 = require("./DAL");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -11,7 +11,11 @@ dotenv_1.default.config();
 const BASE_URL = process.env.BASE_URL;
 const getAllCars = async (req, res) => {
     try {
-        const cars = await (0, DAL_1.getAllCarsFromDB)();
+        const advertiser = req.params.advertiser;
+        if (!advertiser)
+            throw new Error("advertiser requyer");
+        console.log(advertiser);
+        const cars = await (0, DAL_1.getAllCarsFromDB)(advertiser);
         res.send(cars);
     }
     catch (error) {
@@ -20,6 +24,29 @@ const getAllCars = async (req, res) => {
     }
 };
 exports.getAllCars = getAllCars;
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await (0, DAL_1.getAllUsersFromDB)();
+        const newUsers = users.map((user) => {
+            return {
+                id: user._id,
+                userName: user.userName,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                phone: user.phone,
+                IsAdamin: user.IsAdamin,
+                profileImage: user.profileImage
+            };
+        });
+        console.log(newUsers);
+        res.send(newUsers);
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).send(error.message);
+    }
+};
+exports.getAllUsers = getAllUsers;
 const getCar = async (req, res) => {
     const { id } = req.params;
     try {

@@ -12,14 +12,20 @@ const CarSchema = new Schema(
     hand: { type: Number, required: false },
     test: { type: String, required: false },
     note: { type: String, required: false },
-    price: { type: Number, required: false }
+    price: { type: Number, required: false },
+    advertiser: { type: String, required: false }
   }
 );
 
 const UserSchema = new Schema(
   {
     userName: { type: String, required: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    phone: { type: Number, required: true },
+    IsAdamin: { type: Boolean, required: true },
+    profileImage: { type: String, required: true },
   }
 );
 

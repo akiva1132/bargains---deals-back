@@ -3,13 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addUser = exports.getToken = exports.changePriceDB = exports.insertCar = exports.getCarFromDB = exports.getAllCarsFromDB = exports.secretKey = void 0;
+exports.addUser = exports.getToken = exports.changePriceDB = exports.insertCar = exports.getCarFromDB = exports.getAllUsersFromDB = exports.getAllCarsFromDB = exports.secretKey = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const mongoSchema_1 = require("../configuration/mongoSchema");
 exports.secretKey = "akiva1132";
-const getAllCarsFromDB = async () => {
+const getAllCarsFromDB = async (advertiser) => {
     try {
-        const result = await mongoSchema_1.CarsAuctionModel.find();
+        const result = await mongoSchema_1.CarsAuctionModel.find({ advertiser: advertiser });
         console.log(result);
         return result;
     }
@@ -19,6 +19,18 @@ const getAllCarsFromDB = async () => {
     }
 };
 exports.getAllCarsFromDB = getAllCarsFromDB;
+const getAllUsersFromDB = async () => {
+    try {
+        const result = await mongoSchema_1.UserAuctionModel.find();
+        console.log(result);
+        return result;
+    }
+    catch (error) {
+        throw error;
+        console.log(error);
+    }
+};
+exports.getAllUsersFromDB = getAllUsersFromDB;
 const getCarFromDB = async (id) => {
     try {
         const result = await mongoSchema_1.CarsAuctionModel.findById(id);
@@ -61,7 +73,9 @@ const getToken = async (userName, password) => {
         const result = await mongoSchema_1.UserAuctionModel.findOne({ userName: userName });
         if (result && result.password === password) {
             console.log(result);
-            const token = jsonwebtoken_1.default.sign({ userName, password }, exports.secretKey, { expiresIn: '30d' });
+            console.log(result);
+            const userId = result._id.toString();
+            const token = jsonwebtoken_1.default.sign({ userName, password, userId }, exports.secretKey, { expiresIn: '30d' });
             console.log(token);
             return token;
         }
@@ -76,6 +90,12 @@ const getToken = async (userName, password) => {
 exports.getToken = getToken;
 const addUser = async (user) => {
     try {
+        const isExsist = await mongoSchema_1.UserAuctionModel.findOne({ userName: user.userName });
+        if (isExsist) {
+            throw new Error("user is exsist");
+        }
+        user.IsAdamin = false;
+        user.profileImage = "https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0=";
         const newUser = new mongoSchema_1.UserAuctionModel(user);
         await newUser.save();
         const { userName, password } = user;

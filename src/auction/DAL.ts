@@ -3,9 +3,23 @@ import { Car, CarsAuctionModel, User, UserAuctionModel } from '../configuration/
 import { error } from 'console';
 
 export const secretKey = "akiva1132"
-export const getAllCarsFromDB = async () => {
+
+
+export const getAllCarsFromDB = async (advertiser:string) => {
     try {
-        const result = await CarsAuctionModel.find()
+        const result = await CarsAuctionModel.find({advertiser:advertiser})
+        console.log(result);
+        return result
+    }
+    catch (error) {
+        throw error
+        console.log(error)
+    }
+}
+
+export const getAllUsersFromDB = async () => {
+    try {
+        const result = await UserAuctionModel.find()
         console.log(result);
         return result
     }
@@ -56,15 +70,15 @@ export const changePriceDB = async (id: string, price: number) => {
     }
 };
 
-
 export const getToken = async (userName: string, password: string) => {
     try {
         const result = await UserAuctionModel.findOne({ userName: userName })
         if (result && result.password === password) {
             console.log(result);
-            const token = jwt.sign({ userName, password }, secretKey, { expiresIn: '30d' });
+            console.log(result);
+            const userId = result._id.toString()
+            const token = jwt.sign({ userName, password, userId }, secretKey, { expiresIn: '30d' });
             console.log(token);
-
             return token
         }
         else throw new Error("user not found or password incorrect")
@@ -77,6 +91,12 @@ export const getToken = async (userName: string, password: string) => {
 
 export const addUser = async (user:User) => {
     try {
+        const isExsist = await UserAuctionModel.findOne({ userName: user.userName })
+        if (isExsist){
+            throw new Error ("user is exsist")
+        }
+        user.IsAdamin = false
+        user.profileImage = "https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
         const newUser = new UserAuctionModel(user);
         await newUser.save()
         const { userName, password } = user
