@@ -95,11 +95,13 @@ const addUser = async (user) => {
             throw new Error("user is exsist");
         }
         user.IsAdamin = false;
-        user.profileImage = "https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0=";
+        if (!user.profileImage)
+            user.profileImage = "https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0=";
         const newUser = new mongoSchema_1.UserAuctionModel(user);
-        await newUser.save();
+        const result = await newUser.save();
         const { userName, password } = user;
-        const token = jsonwebtoken_1.default.sign({ userName, password }, exports.secretKey, { expiresIn: '30d' });
+        const userId = result._id.toString();
+        const token = jsonwebtoken_1.default.sign({ userName, password, userId }, exports.secretKey, { expiresIn: '30d' });
         return token;
     }
     catch (error) {

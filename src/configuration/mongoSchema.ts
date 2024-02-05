@@ -13,7 +13,7 @@ const CarSchema = new Schema(
     test: { type: String, required: false },
     note: { type: String, required: false },
     price: { type: Number, required: false },
-    advertiser: { type: String, required: false }
+    advertiser: { type: String, required: true }
   }
 );
 
