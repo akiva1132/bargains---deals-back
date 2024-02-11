@@ -31,11 +31,11 @@ const getAllUsers = async (req, res) => {
             return {
                 id: user._id,
                 userName: user.userName,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                fullName: user.fullName,
                 phone: user.phone,
                 IsAdamin: user.IsAdamin,
-                profileImage: user.profileImage
+                profileImage: user.profileImage,
+                numberAds: user.numberAds
             };
         });
         console.log(newUsers);
@@ -63,6 +63,8 @@ const addCar = async (req, res) => {
     try {
         const car = req.body;
         await (0, DAL_1.insertCar)(car);
+        console.log(car.advertiser);
+        await (0, DAL_1.incrementUserField)(car.advertiser);
         res.send("the transaction completed successfully!");
     }
     catch (error) {

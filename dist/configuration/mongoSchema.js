@@ -40,11 +40,11 @@ const CarSchema = new mongoose_1.Schema({
 const UserSchema = new mongoose_1.Schema({
     userName: { type: String, required: true },
     password: { type: String, required: true },
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    phone: { type: Number, required: true },
+    fullName: { type: String, required: true },
+    phone: { type: String, required: true },
     IsAdamin: { type: Boolean, required: true },
     profileImage: { type: String, required: true },
+    numberAds: { type: Number, required: true },
 });
 exports.CardModel = mongoose_1.default.model("Car", CarSchema);
 exports.UserModel = mongoose_1.default.model("users", UserSchema);

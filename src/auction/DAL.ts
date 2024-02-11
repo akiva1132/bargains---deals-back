@@ -89,6 +89,19 @@ export const getToken = async (userName: string, password: string) => {
     }
 }
 
+export const incrementUserField = async (id) => {
+    try {
+        const updatedUser = await UserAuctionModel.updateOne(
+            { _id: id },
+            { $inc: { numberAds: 1 } }
+        );
+        return updatedUser;
+    } catch (error) {
+        console.error('Error incrementing user field:', error);
+        throw error;
+    }
+};
+
 export const addUser = async (user:User) => {
     try {
         const isExsist = await UserAuctionModel.findOne({ userName: user.userName })

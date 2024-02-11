@@ -7,7 +7,8 @@ import {
     changePriceDB,
     getToken,
     addUser,
-    getAllUsersFromDB
+    getAllUsersFromDB,
+    incrementUserField
 } from "./DAL";
 import jwt from 'jsonwebtoken';
 import dotenv from "dotenv";
@@ -38,11 +39,11 @@ export const getAllUsers = async (req: Request, res: Response) => {
             return {
                 id: user._id,
                 userName: user.userName,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                fullName: user.fullName,
                 phone: user.phone,
                 IsAdamin: user.IsAdamin,
-                profileImage: user.profileImage
+                profileImage: user.profileImage,
+                numberAds: user.numberAds
             }
         })
         console.log(newUsers);
@@ -70,6 +71,9 @@ export const addCar = async (req: Request, res: Response) => {
     try {
         const car = req.body
         await insertCar(car)
+        console.log(car.advertiser);
+        
+        await incrementUserField(car.advertiser)
         res.send("the transaction completed successfully!")
     }
     catch (error) {

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addUser = exports.getToken = exports.changePriceDB = exports.insertCar = exports.getCarFromDB = exports.getAllUsersFromDB = exports.getAllCarsFromDB = exports.secretKey = void 0;
+exports.addUser = exports.incrementUserField = exports.getToken = exports.changePriceDB = exports.insertCar = exports.getCarFromDB = exports.getAllUsersFromDB = exports.getAllCarsFromDB = exports.secretKey = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const mongoSchema_1 = require("../configuration/mongoSchema");
 exports.secretKey = "akiva1132";
@@ -88,6 +88,17 @@ const getToken = async (userName, password) => {
     }
 };
 exports.getToken = getToken;
+const incrementUserField = async (id) => {
+    try {
+        const updatedUser = await mongoSchema_1.UserAuctionModel.updateOne({ _id: id }, { $inc: { numberAds: 1 } });
+        return updatedUser;
+    }
+    catch (error) {
+        console.error('Error incrementing user field:', error);
+        throw error;
+    }
+};
+exports.incrementUserField = incrementUserField;
 const addUser = async (user) => {
     try {
         const isExsist = await mongoSchema_1.UserAuctionModel.findOne({ userName: user.userName });
