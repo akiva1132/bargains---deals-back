@@ -15,4 +15,4 @@ exports.auctionRouter.post('/addCar', services_1.authenticateToken, services_1.a
 exports.auctionRouter.post('/generateCode', services_1.authenticateToken, services_1.generateCode);
 // auctionRouter.get('/getCode', getCode)
 exports.auctionRouter.post('/logIn', services_1.logIn);
-exports.auctionRouter.post('/register', services_1.regiset);
+exports.auctionRouter.post('/register/:code', services_1.regiset);

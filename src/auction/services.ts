@@ -130,11 +130,10 @@ export const logIn = async (req: Request, res: Response) => {
 export const regiset = async (req: Request, res: Response) => {
     try {
         const user = req.body
+        const code = req.params
         console.log( req.body);
-        
         console.log(user);
-        
-        const token = await addUser(user)
+        const token = await addUser(user, )
         res.send(token)
     }
     catch (error) {

@@ -120,6 +120,7 @@ exports.logIn = logIn;
 const regiset = async (req, res) => {
     try {
         const user = req.body;
+        const code = req.params;
         console.log(req.body);
         console.log(user);
         const token = await (0, DAL_1.addUser)(user);

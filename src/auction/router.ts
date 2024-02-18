@@ -23,4 +23,4 @@ auctionRouter.post('/generateCode', authenticateToken, generateCode)
 // auctionRouter.get('/getCode', getCode)
 
 auctionRouter.post('/logIn', logIn)
-auctionRouter.post('/register', regiset)
+auctionRouter.post('/register/:code', regiset)

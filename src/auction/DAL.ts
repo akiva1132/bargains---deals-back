@@ -105,18 +105,16 @@ export const incrementUserField = async (id: string) => {
 
 export const AddCodeInDB = async (isAdmin: boolean) => {
     try {
-
         if(!isAdmin){
             throw new Error("הרשאת ניהול נדרשת")
         }
         const code =  Math.floor(Math.random() * 1000000);
-        fs.writeFile('data.json', JSON.stringify(code), (err) => {
+        fs.writeFile('./data.json', JSON.stringify(code), (err) => {
             if (err) {
                 throw new Error('אירעה שגיאה בכתיבת הקובץ:' + err.message)
               return;
             }
             console.log(code);
-            
           });
         return code.toString();
     } catch (error) {
@@ -131,6 +129,16 @@ export const addUser = async (user: User) => {
         if (isExsist) {
             throw new Error("user is exsist")
         }
+        fs.readFile('./data.json', (err, result) => {
+            if (err) {
+                throw new Error('אירעה שגיאה בכתיבת הקובץ:' + err.message)
+              return;
+            }
+            const code = result.toString()
+            if (code !== code){
+                throw new Error("קוד הרשמה אינו תואם")
+            }
+          });
         user.IsAdamin = false
         if (!user.profileImage) user.profileImage = "https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
         const newUser = new UserAuctionModel(user);
