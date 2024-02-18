@@ -9,7 +9,9 @@ import {
     addUser,
     getAllUsersFromDB,
     incrementUserField,
-    AddCodeInDB
+    AddCodeInDB,
+    getNameGetByID,
+    deleteCarFromDB
 } from "./DAL";
 import jwt from 'jsonwebtoken';
 import dotenv from "dotenv";
@@ -130,7 +132,7 @@ export const logIn = async (req: Request, res: Response) => {
 export const regiset = async (req: Request, res: Response) => {
     try {
         const user = req.body
-        const code = req.params
+        const {code} = req.params
         console.log( req.body);
         console.log(user);
         const token = await addUser(user, code)
@@ -159,6 +161,40 @@ export const generateCode = async (req: Request, res: Response) => {
         const {user} = req.body
         const code = await AddCodeInDB(user.isAdmin)
         res.send(code)
+    }
+    catch (error) {
+        if (error instanceof Error) res.status(400).send(error.message)
+    }
+}
+export const getName = async (req: Request, res: Response) => {
+    try {
+        const {id} = req.params        
+        if(!id){
+            throw new Error("id is req")
+        }
+        const name = await getNameGetByID(id)
+        res.send(name)
+    }
+    catch (error) {
+        if (error instanceof Error) res.status(400).send(error.message)
+    }
+}
+
+export const deleteCar = async (req: Request, res: Response) => {
+    try {
+        console.log(req.params);
+        
+        const {carId, userId} = req.params         
+        if(!carId){
+            throw new Error("id is req")
+        }
+        console.log(req.body.user.userId, userId);
+        
+        if(req.body.user.userId !== userId){
+            throw new Error("אין הרשאת מחיקה")
+        }
+        const result = await deleteCarFromDB(carId, userId)
+        res.send(result)
     }
     catch (error) {
         if (error instanceof Error) res.status(400).send(error.message)

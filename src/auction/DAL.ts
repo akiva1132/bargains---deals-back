@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { Car, CarsAuctionModel, User, UserAuctionModel } from '../configuration/mongoSchema';
+import { Car, CardModel, CarsAuctionModel, User, UserAuctionModel } from '../configuration/mongoSchema';
 import fs from 'fs'
 export const secretKey = "akiva1132"
 
@@ -102,6 +102,43 @@ export const incrementUserField = async (id: string) => {
     }
 };
 
+export const getNameGetByID = async (id: string) => {
+    try {
+        console.log(id);
+        
+        const user = await UserAuctionModel.findById(id).select('fullName');
+        console.log(user);
+        
+        return user?.fullName;
+    } catch (error) {
+        console.error('Error incrementing user field:', error);
+        throw error;
+    }
+};
+
+
+export const deleteCarFromDB = async (id: string, userId: string) => {
+    try {
+        console.log(id);   
+        const result = await CarsAuctionModel.deleteOne({_id:id})
+        await UserAuctionModel.updateOne(
+            { _id: userId },
+            { $inc: { numberAds: -1 } }
+        );
+        console.log(result);
+        if (result.deletedCount){
+            return "המודעה נמחקה בהצלחה"    
+        }
+        else{
+            throw new Error("error")
+        }
+
+    } catch (error) {
+        console.error('Error incrementing user field:', error);
+        throw error;
+    }
+};
+
 
 export const AddCodeInDB = async (isAdmin: boolean) => {
     try {
@@ -123,16 +160,16 @@ export const AddCodeInDB = async (isAdmin: boolean) => {
     }
 };
 
-export const addUser = async (user: User, code:{code:string}) => {
+export const addUser = async (user: User, code:string) => {
     try {
         const isExsist = await UserAuctionModel.findOne({ userName: user.userName })
         if (isExsist) {
             throw new Error("user is exsist")
         }
         const codeFromFile = fs.readFileSync('./data.json');
-        console.log(codeFromFile.toString(), code.code.toString());
+        console.log(codeFromFile.toString(), code.toString());
         
-            if (codeFromFile.toString() !== code.code.toString()){
+            if (codeFromFile.toString() !== code.toString()){
                 throw new Error("קוד הרשמה אינו תואם")
             }
         user.IsAdamin = false

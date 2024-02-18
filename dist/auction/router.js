@@ -13,6 +13,7 @@ exports.auctionRouter.get('/users', services_1.getAllUsers);
 exports.auctionRouter.get('/getCar/:id', services_1.getCar);
 exports.auctionRouter.post('/addCar', services_1.authenticateToken, services_1.addCar);
 exports.auctionRouter.post('/generateCode', services_1.authenticateToken, services_1.generateCode);
-// auctionRouter.get('/getCode', getCode)
+exports.auctionRouter.get('/getName/:id', services_1.authenticateToken, services_1.getName);
+exports.auctionRouter.post('/car/:carId/:userId', services_1.authenticateToken, services_1.deleteCar);
 exports.auctionRouter.post('/logIn', services_1.logIn);
 exports.auctionRouter.post('/register/:code', services_1.regiset);

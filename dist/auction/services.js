@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateCode = exports.authenticateToken = exports.regiset = exports.logIn = exports.priceIncrease = exports.checkPrice = exports.addCar = exports.getCar = exports.getAllUsers = exports.getAllCars = void 0;
+exports.deleteCar = exports.getName = exports.generateCode = exports.authenticateToken = exports.regiset = exports.logIn = exports.priceIncrease = exports.checkPrice = exports.addCar = exports.getCar = exports.getAllUsers = exports.getAllCars = void 0;
 const DAL_1 = require("./DAL");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -120,7 +120,7 @@ exports.logIn = logIn;
 const regiset = async (req, res) => {
     try {
         const user = req.body;
-        const code = req.params;
+        const { code } = req.params;
         console.log(req.body);
         console.log(user);
         const token = await (0, DAL_1.addUser)(user, code);
@@ -160,6 +160,41 @@ const generateCode = async (req, res) => {
     }
 };
 exports.generateCode = generateCode;
+const getName = async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (!id) {
+            throw new Error("id is req");
+        }
+        const name = await (0, DAL_1.getNameGetByID)(id);
+        res.send(name);
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).send(error.message);
+    }
+};
+exports.getName = getName;
+const deleteCar = async (req, res) => {
+    try {
+        console.log(req.params);
+        const { carId, userId } = req.params;
+        if (!carId) {
+            throw new Error("id is req");
+        }
+        console.log(req.body.user.userId, userId);
+        if (req.body.user.userId !== userId) {
+            throw new Error("אין הרשאת מחיקה");
+        }
+        const result = await (0, DAL_1.deleteCarFromDB)(carId, userId);
+        res.send(result);
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).send(error.message);
+    }
+};
+exports.deleteCar = deleteCar;
 // export const deleteCar = async (req: Request, res: Response) => {
 //     const { id } = req.params
 //     try {

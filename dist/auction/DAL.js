@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addUser = exports.AddCodeInDB = exports.incrementUserField = exports.getToken = exports.changePriceDB = exports.insertCar = exports.getCarFromDB = exports.getAllUsersFromDB = exports.getAllCarsFromDB = exports.secretKey = void 0;
+exports.addUser = exports.AddCodeInDB = exports.deleteCarFromDB = exports.getNameGetByID = exports.incrementUserField = exports.getToken = exports.changePriceDB = exports.insertCar = exports.getCarFromDB = exports.getAllUsersFromDB = exports.getAllCarsFromDB = exports.secretKey = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const mongoSchema_1 = require("../configuration/mongoSchema");
 const fs_1 = __importDefault(require("fs"));
@@ -101,6 +101,38 @@ const incrementUserField = async (id) => {
     }
 };
 exports.incrementUserField = incrementUserField;
+const getNameGetByID = async (id) => {
+    try {
+        console.log(id);
+        const user = await mongoSchema_1.UserAuctionModel.findById(id).select('fullName');
+        console.log(user);
+        return user === null || user === void 0 ? void 0 : user.fullName;
+    }
+    catch (error) {
+        console.error('Error incrementing user field:', error);
+        throw error;
+    }
+};
+exports.getNameGetByID = getNameGetByID;
+const deleteCarFromDB = async (id, userId) => {
+    try {
+        console.log(id);
+        const result = await mongoSchema_1.CarsAuctionModel.deleteOne({ _id: id });
+        await mongoSchema_1.UserAuctionModel.updateOne({ _id: userId }, { $inc: { numberAds: -1 } });
+        console.log(result);
+        if (result.deletedCount) {
+            return "המודעה נמחקה בהצלחה";
+        }
+        else {
+            throw new Error("error");
+        }
+    }
+    catch (error) {
+        console.error('Error incrementing user field:', error);
+        throw error;
+    }
+};
+exports.deleteCarFromDB = deleteCarFromDB;
 const AddCodeInDB = async (isAdmin) => {
     try {
         if (!isAdmin) {
@@ -129,8 +161,8 @@ const addUser = async (user, code) => {
             throw new Error("user is exsist");
         }
         const codeFromFile = fs_1.default.readFileSync('./data.json');
-        console.log(codeFromFile.toString(), code.code.toString());
-        if (codeFromFile.toString() !== code.code.toString()) {
+        console.log(codeFromFile.toString(), code.toString());
+        if (codeFromFile.toString() !== code.toString()) {
             throw new Error("קוד הרשמה אינו תואם");
         }
         user.IsAdamin = false;
