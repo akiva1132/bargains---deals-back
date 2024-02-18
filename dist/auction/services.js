@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authenticateToken = exports.regiset = exports.logIn = exports.priceIncrease = exports.checkPrice = exports.addCar = exports.getCar = exports.getAllUsers = exports.getAllCars = void 0;
+exports.generateCode = exports.authenticateToken = exports.regiset = exports.logIn = exports.priceIncrease = exports.checkPrice = exports.addCar = exports.getCar = exports.getAllUsers = exports.getAllCars = void 0;
 const DAL_1 = require("./DAL");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -137,6 +137,7 @@ const authenticateToken = async (req, res, next) => {
         return res.status(401).json({ error: 'Unauthorized' });
     try {
         const decoded = jsonwebtoken_1.default.verify(token, DAL_1.secretKey);
+        req.body.user = decoded;
         if (decoded)
             next();
     }
@@ -146,6 +147,18 @@ const authenticateToken = async (req, res, next) => {
     }
 };
 exports.authenticateToken = authenticateToken;
+const generateCode = async (req, res) => {
+    try {
+        const { user } = req.body;
+        const code = await (0, DAL_1.AddCodeInDB)(user.isAdmin);
+        res.send(code);
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(400).send(error.message);
+    }
+};
+exports.generateCode = generateCode;
 // export const deleteCar = async (req: Request, res: Response) => {
 //     const { id } = req.params
 //     try {

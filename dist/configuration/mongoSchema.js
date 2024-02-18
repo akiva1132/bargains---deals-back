@@ -45,6 +45,7 @@ const UserSchema = new mongoose_1.Schema({
     IsAdamin: { type: Boolean, required: true },
     profileImage: { type: String, required: true },
     numberAds: { type: Number, required: true },
+    isAdmin: { type: Boolean, required: true },
 });
 exports.CardModel = mongoose_1.default.model("Car", CarSchema);
 exports.UserModel = mongoose_1.default.model("users", UserSchema);

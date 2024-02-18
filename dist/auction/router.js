@@ -12,5 +12,7 @@ exports.auctionRouter.get('/cars/:advertiser?', services_1.getAllCars);
 exports.auctionRouter.get('/users', services_1.getAllUsers);
 exports.auctionRouter.get('/getCar/:id', services_1.getCar);
 exports.auctionRouter.post('/addCar', services_1.authenticateToken, services_1.addCar);
+exports.auctionRouter.post('/generateCode', services_1.authenticateToken, services_1.generateCode);
+// auctionRouter.get('/getCode', getCode)
 exports.auctionRouter.post('/logIn', services_1.logIn);
 exports.auctionRouter.post('/register', services_1.regiset);

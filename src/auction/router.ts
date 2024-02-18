@@ -7,7 +7,8 @@ import {
     logIn,
     priceIncrease,
     regiset,
-    getAllUsers
+    getAllUsers,
+    generateCode
 } from "./services";
 
 export const auctionRouter = express.Router();
@@ -18,6 +19,8 @@ auctionRouter.get('/cars/:advertiser?', getAllCars)
 auctionRouter.get('/users', getAllUsers)
 auctionRouter.get('/getCar/:id', getCar)
 auctionRouter.post('/addCar', authenticateToken, addCar)
+auctionRouter.post('/generateCode', authenticateToken, generateCode)
+// auctionRouter.get('/getCode', getCode)
 
 auctionRouter.post('/logIn', logIn)
 auctionRouter.post('/register', regiset)

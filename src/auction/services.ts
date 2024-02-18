@@ -8,7 +8,8 @@ import {
     getToken,
     addUser,
     getAllUsersFromDB,
-    incrementUserField
+    incrementUserField,
+    AddCodeInDB
 } from "./DAL";
 import jwt from 'jsonwebtoken';
 import dotenv from "dotenv";
@@ -146,10 +147,22 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
     if (!token) return res.status(401).json({ error: 'Unauthorized' });
     try {
         const decoded = jwt.verify(token, secretKey);
+        req.body.user = decoded
         if (decoded) next();
     } catch (error) {
         console.log(token);
         return res.status(403).json({ error: 'Forbidden' });
+    }
+}
+
+export const generateCode = async (req: Request, res: Response) => {
+    try {
+        const {user} = req.body
+        const code = await AddCodeInDB(user.isAdmin)
+        res.send(code)
+    }
+    catch (error) {
+        if (error instanceof Error) res.status(400).send(error.message)
     }
 }
 

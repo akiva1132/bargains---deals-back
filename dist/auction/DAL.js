@@ -3,9 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addUser = exports.incrementUserField = exports.getToken = exports.changePriceDB = exports.insertCar = exports.getCarFromDB = exports.getAllUsersFromDB = exports.getAllCarsFromDB = exports.secretKey = void 0;
+exports.addUser = exports.AddCodeInDB = exports.incrementUserField = exports.getToken = exports.changePriceDB = exports.insertCar = exports.getCarFromDB = exports.getAllUsersFromDB = exports.getAllCarsFromDB = exports.secretKey = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const mongoSchema_1 = require("../configuration/mongoSchema");
+const fs_1 = __importDefault(require("fs"));
 exports.secretKey = "akiva1132";
 const getAllCarsFromDB = async (advertiser) => {
     try {
@@ -75,7 +76,8 @@ const getToken = async (userName, password) => {
             console.log(result);
             console.log(result);
             const userId = result._id.toString();
-            const token = jsonwebtoken_1.default.sign({ userName, password, userId }, exports.secretKey, { expiresIn: '30d' });
+            const isAdmin = result.IsAdamin;
+            const token = jsonwebtoken_1.default.sign({ userName, password, userId, isAdmin }, exports.secretKey, { expiresIn: '30d' });
             console.log(token);
             return token;
         }
@@ -99,6 +101,27 @@ const incrementUserField = async (id) => {
     }
 };
 exports.incrementUserField = incrementUserField;
+const AddCodeInDB = async (isAdmin) => {
+    try {
+        if (!isAdmin) {
+            throw new Error("הרשאת ניהול נדרשת");
+        }
+        const code = Math.floor(Math.random() * 1000000);
+        fs_1.default.writeFile('data.json', JSON.stringify(code), (err) => {
+            if (err) {
+                throw new Error('אירעה שגיאה בכתיבת הקובץ:' + err.message);
+                return;
+            }
+            console.log(code);
+        });
+        return code.toString();
+    }
+    catch (error) {
+        console.error('Error incrementing user field:', error);
+        throw error;
+    }
+};
+exports.AddCodeInDB = AddCodeInDB;
 const addUser = async (user) => {
     try {
         const isExsist = await mongoSchema_1.UserAuctionModel.findOne({ userName: user.userName });

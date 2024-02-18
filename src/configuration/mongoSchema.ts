@@ -26,6 +26,7 @@ const UserSchema = new Schema(
     IsAdamin: { type: Boolean, required: true },
     profileImage: { type: String, required: true },
     numberAds: { type: Number, required: true },
+    isAdmin: { type: Boolean, required: true },
   }
 );
 
