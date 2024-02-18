@@ -128,16 +128,11 @@ const addUser = async (user, code) => {
         if (isExsist) {
             throw new Error("user is exsist");
         }
-        fs_1.default.readFile('./data.json', (err, result) => {
-            if (err) {
-                throw new Error('אירעה שגיאה בכתיבת הקובץ:' + err.message);
-                return;
-            }
-            const code = result.toString();
-            if (code !== code) {
-                throw new Error("קוד הרשמה אינו תואם");
-            }
-        });
+        const codeFromFile = fs_1.default.readFileSync('./data.json');
+        console.log(codeFromFile.toString(), code.code.toString());
+        if (codeFromFile.toString() !== code.code.toString()) {
+            throw new Error("קוד הרשמה אינו תואם");
+        }
         user.IsAdamin = false;
         if (!user.profileImage)
             user.profileImage = "https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0=";
