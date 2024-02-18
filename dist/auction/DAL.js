@@ -122,7 +122,7 @@ const AddCodeInDB = async (isAdmin) => {
     }
 };
 exports.AddCodeInDB = AddCodeInDB;
-const addUser = async (user) => {
+const addUser = async (user, code) => {
     try {
         const isExsist = await mongoSchema_1.UserAuctionModel.findOne({ userName: user.userName });
         if (isExsist) {

@@ -123,7 +123,7 @@ export const AddCodeInDB = async (isAdmin: boolean) => {
     }
 };
 
-export const addUser = async (user: User) => {
+export const addUser = async (user: User, code:string) => {
     try {
         const isExsist = await UserAuctionModel.findOne({ userName: user.userName })
         if (isExsist) {

@@ -123,7 +123,7 @@ const regiset = async (req, res) => {
         const code = req.params;
         console.log(req.body);
         console.log(user);
-        const token = await (0, DAL_1.addUser)(user);
+        const token = await (0, DAL_1.addUser)(user, code);
         res.send(token);
     }
     catch (error) {
