@@ -141,7 +141,7 @@ const AddCodeInDB = async (isAdmin) => {
         const code = Math.floor(Math.random() * 1000000);
         fs_1.default.writeFile('./data.json', JSON.stringify(code), (err) => {
             if (err) {
-                throw new Error('אירעה שגיאה בכתיבת הקובץ:' + err.message);
+                throw new Error('אירעה שגיאה ביצירת הקוד:' + err.message);
                 return;
             }
             console.log(code);
@@ -158,13 +158,14 @@ const addUser = async (user, code) => {
     try {
         const isExsist = await mongoSchema_1.UserAuctionModel.findOne({ userName: user.userName });
         if (isExsist) {
-            throw new Error("user is exsist");
+            throw new Error("המשתמש כבר קיים");
         }
         const codeFromFile = fs_1.default.readFileSync('./data.json');
         console.log(codeFromFile.toString(), code.toString());
         if (codeFromFile.toString() !== code.toString()) {
             throw new Error("קוד הרשמה אינו תואם");
         }
+        fs_1.default.writeFileSync('./data.json', "0584241132");
         user.IsAdamin = false;
         if (!user.profileImage)
             user.profileImage = "https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0=";
